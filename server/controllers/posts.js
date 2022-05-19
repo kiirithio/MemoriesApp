@@ -1,20 +1,25 @@
 import mongoose from "mongoose";
+import express  from "express";
 import PostMessage from "../models/postMessage.js";
 
-export const getPosts = async (req, res) => {
+const router =  express.Router();
+
+export const getPosts = async (req, res) => { 
+    const { page } = req.query;
+    
     try {
         const postMessages = await PostMessage.find();
-
+                
         res.status(200).json(postMessages);
     } catch (error) {
-        res.status(404).json({ message: error.message })
+        res.status(404).json({ message: error.message });
     }
 }
 
 export const createPost = async (req, res) => {
-    const post = req.body
+    const post = req.body;
 
-    const newPost = new PostMessage({...post, creator: req.userId, createdAt: new Date().toISOString});
+    const newPost = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() })
 
     try {
         await newPost.save();
