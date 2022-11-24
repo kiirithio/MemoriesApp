@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const postSchema = mongoose.Schema({
     title: String,
     message: String,
-    name: String,
+    username: String,
     creator: String,
     tags: [String],
     selectedFile: String,
@@ -18,7 +18,8 @@ const postSchema = mongoose.Schema({
     createdAt: {
         type: Date,
         default: new Date()
-    }
+    },
+    datetime: Date
 });
 
 const PostMessage = mongoose.model('PostMessage', postSchema);

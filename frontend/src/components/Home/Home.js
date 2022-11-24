@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import ChipInput from 'material-ui-chip-input';
@@ -8,7 +8,7 @@ import { Container, Grow, Grid, Paper, AppBar, TextField, Button } from '@materi
 import Posts from '../Posts/Posts';
 import Pagination from '../Pagination';
 import Form from '../Form/Form';
-import { getPosts, getPostsBySearch } from '../../redux/actions/posts';
+import { getPostsBySearch } from '../../redux/actions/posts';
 import useStyles from './styles';
 
 function useQuery() {
@@ -57,7 +57,7 @@ const Home = () => {
                         <TextField
                          name="search" 
                          variant="outlined" 
-                         label="Search Post"
+                         label="Search Event"
                          fullWidth
                          onKeyPress={handleKeyPress}
                          value={search}
@@ -66,17 +66,19 @@ const Home = () => {
                         <ChipInput
                          styles={{ margin: '10px 0'}}
                          value={tags}
-                         onAdd={handleAdd}
-                         onDelete={handleDelete}
+                         onAdd={(chip) => {handleAdd(chip)}}
+                         onDelete={(chip) => {handleDelete(chip)}}
                          label="Search Tags"
                          variant="outlined"
                         />
                         <Button onClick={searchPost} className={classes.searchButton} color="primary" variant="contained">Search</Button>
                     </AppBar>
                     <Form currentId={currentId} setCurrentId={setCurrentId}/>
+                    {(!searchQuery && !tags.length) && (
                     <Paper elevation={6}>
                         <Pagination page={page} />
                     </Paper>
+                    )}
                 </Grid>
             </Grid>
         </Container>

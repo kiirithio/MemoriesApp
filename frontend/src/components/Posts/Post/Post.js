@@ -18,21 +18,25 @@ const Post = ({ post, setCurrentId }) => {
     const [likes, setLikes] = useState(post?.likes);
     const user = JSON.parse(localStorage.getItem('profile'));
     const userId = user?.result.googleId || user?.result?._id;
+    const hasLikedPost = likes.find((like) => like === (userId))
 
     const Likes = () => {
         if (likes.length > 0) {
           return likes.find((like) => like === (userId))
             ? (
-              <><ThumbUpAltIcon fontSize="small" />&nbsp;{likes.length > 2 ? `You and ${likes.length - 1} others` : `${likes.length} like${likes.length > 1 ? 's' : ''}` }</>
+              <><ThumbUpAltIcon fontSize="small" />&nbsp;{likes.length > 2 ? `You and ${likes.length - 1} others` : `${likes.length} pledge${likes.length > 1 ? 's' : ''}` }</>
             ) : (
-              <><ThumbUpAltOutlined fontSize="small" />&nbsp;{likes.length} {likes.length === 1 ? 'Like' : 'Likes'}</>
+              <><ThumbUpAltOutlined fontSize="small" />&nbsp;{likes.length} {likes.length === 1 ? 'Pledge' : 'Pledges'}</>
             );
         }
     
-        return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
+        return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Pledge</>;
     };
 
-    const hasLikedPost = likes.find((like) => like === (userId))
+    const datetime = post.datetime;
+    var dateOnly = new Date(datetime).toLocaleDateString();
+    console.log(dateOnly);
+
 
     const handleLike = async () => {
         dispatch(likePost(post._id))
@@ -55,7 +59,7 @@ const Post = ({ post, setCurrentId }) => {
              name="test">
             <CardMedia className={classes.media} image={post.selectedFile} title={post.title} />
             <div className={classes.overlay}>
-                <Typography variant="h6">{post.name}</Typography>
+                <Typography variant="h6">{post.username}</Typography>
                 <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
             </div>
             {(user?.result?._id === post?.creator) && (
@@ -69,6 +73,7 @@ const Post = ({ post, setCurrentId }) => {
                 <Typography variant="body2" color="textSecondary">{post.tags.map((tag) => `#${tag} `)} </Typography>
             </div>
             <Typography className={classes.title} variant="h5" gutterBottom>{post.title} </Typography>
+            <Typography className={classes.details} variant="body2" color="textSecondary">Date: {dateOnly} </Typography>
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">{post.message} </Typography>
             </CardContent>          
